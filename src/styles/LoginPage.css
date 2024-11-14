@@ -1,0 +1,122 @@
+
+.login-container {
+    display: flex;
+    height: 100vh; /* Mengisi seluruh tinggi layar */
+    width: 100%;
+    justify-content: flex-start; /* Menjaga kontainer dimulai dari kiri */
+    align-items: center; /* Memusatkan kontainer secara vertikal */
+}
+
+.login-image {
+    flex: 0 0 50%; /* Membuat gambar mengambil setengah lebar layar */
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center; /* Menjaga gambar tetap terpusat vertikal */
+    justify-content: center; /* Menjaga gambar tetap terpusat secara horizontal */
+}
+
+.login-image img {
+    width: 100%; /* Mengatur gambar untuk memenuhi lebar kontainer gambar */
+    height: 100%; /* Mengatur gambar untuk memenuhi tinggi kontainer gambar */
+    object-fit: cover; /* Memastikan gambar mengisi area tanpa terdistorsi */
+}
+
+.login-form {
+    flex: 1; /* Form login mengambil sisa ruang */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Menjaga form terpusat secara vertikal */
+    justify-content: center; /* Menjaga form berada di tengah vertikal */
+    padding: 20px;
+    background-color: #ffffff;
+    width: 100%; /* Agar form mengisi lebar kontainer */
+    max-width: 400px; /* Menjaga form tidak terlalu lebar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Memberikan sedikit bayangan untuk form */
+    border-radius: 8px; /* Menambah kelengkungan di sudut form */
+    margin-left: 100px; /* Memberikan jarak antara gambar dan form */
+}
+
+.login-form h2 {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.login-form p.subheading {
+    text-align: left; 
+    font-size: 0.875rem;
+    color: #343434; 
+    margin-top: 5px; 
+}
+
+.login-form form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+
+.login-form label {
+    margin-bottom: 5px;
+}
+
+.login-form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.login-form button {
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #7c7979;
+}
+
+
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column; 
+        justify-content: flex-start; 
+        height: auto;
+    }
+
+    .login-image {
+        flex: 0; /* Mengurangi ukuran gambar */
+        width: 100%;
+        height: 250px; /* Menurunkan tinggi gambar untuk perangkat kecil */
+        margin-bottom: 20px; /* Memberikan jarak bawah antara gambar dan form pada perangkat kecil */
+    }
+
+    .login-form {
+        flex: 1;
+        max-width: 90%; /* Membatasi lebar form */
+        padding: 15px;
+    }
+
+    .login-form h2, .subheading {
+        text-align: center; /* Memusatkan teks pada layar kecil */
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form {
+        padding: 10px;
+    }
+
+    .login-form input {
+        font-size: 0.875rem; /* Menurunkan ukuran font input untuk perangkat kecil */
+    }
+
+    .login-form button {
+        font-size: 0.875rem; /* Menurunkan ukuran font tombol untuk perangkat kecil */
+        padding: 8px;
+    }
+}
