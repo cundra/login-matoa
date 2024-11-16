@@ -4,6 +4,8 @@ import './App.js';
 import './index.css';
 import App from './App';
 import './styles/tailwind.css'; 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
