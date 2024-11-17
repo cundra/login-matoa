@@ -31,7 +31,7 @@ const EditFoto = () => {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -47,6 +47,7 @@ const EditFoto = () => {
         onChange={handleImageChange}
         multiple
         className="mb-4 block w-full text-sm text-gray-600 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+        // disabled={selectedImages.length >= 5}
       />
 
       {/* Preview Gambar dengan Slider */}
