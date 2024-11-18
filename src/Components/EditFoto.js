@@ -31,11 +31,10 @@ const EditFoto = () => {
 
   const settings = {
     dots: true,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: false, // Menonaktifkan panah navigasi
   };
 
   return (
@@ -47,7 +46,6 @@ const EditFoto = () => {
         onChange={handleImageChange}
         multiple
         className="mb-4 block w-full text-sm text-gray-600 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
-        // disabled={selectedImages.length >= 5}
       />
 
       {/* Preview Gambar dengan Slider */}
@@ -92,7 +90,7 @@ const EditFoto = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="block w-full px-3 py-2 border border-gray-00 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           placeholder="Masukkan judul"
         />
       </div>
@@ -115,7 +113,7 @@ const EditFoto = () => {
       <div className="flex justify-end">
         <button
           onClick={handleUpload}
-          className="bg-black hover:bg-gray-400 text-white py-2 px-4 rounded-full"
+          className="bg-black hover:bg-gray-400 text-white py-2 px-4 rounded-lg"
         >
           Upload
         </button>
