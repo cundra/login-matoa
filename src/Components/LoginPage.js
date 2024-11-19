@@ -24,7 +24,7 @@ const LoginPage = () => {
       <div className="flex-1 flex justify-center items-center bg-gray-200">
         <img src={wallpaper} alt="Login Illustration" className="object-cover w-full h-full" />
       </div>
-      <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-lg ml-10">
+      <div className="max-w-md w-full p-8 bg-white shadow-lg rounded-lg ml-20">
         <h2 className="text-xl font-semibold mb-2">Welcome</h2>
         <p className="text-sm text-gray-600 mb-4">Please log in to your account</p>
         <form onSubmit={handleLogin}>
