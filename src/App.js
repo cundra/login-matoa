@@ -1,39 +1,46 @@
-// App.js
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './Components/LoginPage';
 import EditFoto from './Components/EditFoto';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import EditAbout from './Components/EditAbout';
 import Navbar from './Components/Navbar';
+import ProtectedRoute from './Components/ProtectedRoute';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   return (
     <Router>
       <div className="flex">
         <Routes>
-          <Route
-            path="/"
-            element={<LoginPage />}
-          />
-          <Route
-            path="/edit-photo"
+         
+          <Route path="/" element={<LoginPage />} />
+          
+        
+          <Route 
+            path="/edit-photo" 
             element={
-              <>
-                <Navbar />
-                <EditFoto />
-              </>
-            }
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <EditFoto />
+                </>
+              </ProtectedRoute>
+            } 
           />
-          <Route
-            path="/edit-about"
+
+          {/* Halaman Edit About */}
+          <Route 
+            path="/edit-about" 
             element={
-              <>
-                <Navbar />
-                <EditAbout />
-              </>
-            }
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <EditAbout />
+                </>
+              </ProtectedRoute>
+            } 
           />
         </Routes>
       </div>

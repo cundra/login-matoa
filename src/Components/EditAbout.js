@@ -1,46 +1,100 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const EditAbout = () => {
-  const [description, setDescription] = useState('');
-  const [whatsappUrl, setWhatsappUrl] = useState(''); // State untuk URL WhatsApp
-  const [instagramUrl, setInstagramUrl] = useState(''); // State untuk URL Instagram
-  const [columns, setColumns] = useState([{ client: '' }]); 
+  const [description, setDescription] = useState("");
+  const [whatsappUrl, setWhatsappUrl] = useState("");
+  const [instagramUrl, setInstagramUrl] = useState("");
+  const [clients, setClients] = useState("");
 
-  const handleColumnChange = (index, value) => {
-    const newColumns = [...columns];
-    newColumns[index].client = value;
-    setColumns(newColumns);
+  // Fetch data saat komponen dimuat
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Ambil token dari localStorage
+        const response = await axios.get("http://localhost:8000/api/get-about", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-    // Menambahkan kolom baru hanya jika kolom client diisi
-    if (value && !newColumns[index + 1]) {
-      newColumns.push({ client: '' });
-      setColumns(newColumns);
+        console.log("API Response:", response.data); // Debug log respons API
+
+        const fetchedData = response.data.data;
+        if (fetchedData && fetchedData.length > 0) {
+          const data = fetchedData[0]; // Ambil data pertama dari respons
+
+          // Isi state dengan data yang diambil dari API
+          setDescription(data.description || ""); // Isi deskripsi
+          setWhatsappUrl(data.whatsapp || ""); // Isi URL WhatsApp
+          setInstagramUrl(data.instagram || ""); // Isi URL Instagram
+          setClients(data.clients || ""); // Isi clients sebagai string
+        } else {
+          console.warn("Data tidak ditemukan dalam respons API");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error); // Debug log jika terjadi kesalahan
+        alert("Gagal mengambil data dari server.");
+      }
+    };
+
+    fetchData(); // Panggil fungsi fetch data
+  }, []);
+
+  // Fungsi untuk upload data ke API
+  const handleUpload = async () => {
+    const clientsArray = clients
+      .split(",")
+      .map((client) => client.trim())
+      .filter(Boolean); // Pecah string clients menjadi array
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:8000/api/about/update-desc",
+        {
+          description,
+          whatsapp: whatsappUrl,
+          instagram: instagramUrl,
+          clients: clientsArray,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Data berhasil diupload!");
+      }
+    } catch (error) {
+      console.error("Error uploading data:", error);
+      alert("Gagal mengupload data.");
     }
-  };
-
-  const handleRemoveColumn = (index) => {
-    if (columns.length > 1) {
-      const newColumns = columns.filter((_, i) => i !== index);
-      setColumns(newColumns);
-    }
-  };
-
-  const handleUpload = () => {
-    console.log('Form Data:', { description, whatsappUrl, instagramUrl, columns });
-    alert('Data berhasil diupload!');
   };
 
   return (
-    <div className="p-8 w-full flex flex-col justify-start border-30 rounded-lg" style={{ backgroundColor: '#f5f5f5', minHeight: '100vh', marginTop: '70px' }}>
+    <div
+      className="p-8 w-full flex flex-col justify-start border-30 rounded-lg"
+      style={{
+        backgroundColor: "#f5f5f5",
+        minHeight: "100vh",
+        marginTop: "70px",
+      }}
+    >
       <div className="w-full">
         {/* Form untuk Deskripsi */}
         <div className="mb-4 w-full">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Deskripsi
           </label>
           <textarea
             id="description"
-            value={description}
+            value={description} // Terhubung ke state
             onChange={(e) => setDescription(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Masukkan deskripsi"
@@ -50,13 +104,16 @@ const EditAbout = () => {
 
         {/* Input URL WhatsApp */}
         <div className="mb-4 w-full">
-          <label htmlFor="whatsapp" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="whatsapp"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             URL WhatsApp
           </label>
           <input
             id="whatsapp"
             type="text"
-            value={whatsappUrl}
+            value={whatsappUrl} // Terhubung ke state
             onChange={(e) => setWhatsappUrl(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Masukkan URL WhatsApp"
@@ -65,53 +122,39 @@ const EditAbout = () => {
 
         {/* Input URL Instagram */}
         <div className="mb-4 w-full">
-          <label htmlFor="instagram" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="instagram"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             URL Instagram
           </label>
           <input
             id="instagram"
             type="text"
-            value={instagramUrl}
+            value={instagramUrl} // Terhubung ke state
             onChange={(e) => setInstagramUrl(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Masukkan URL Instagram"
           />
         </div>
 
-        {/* Label untuk Client */}
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Client
-        </label>
-
-        {/* Loop untuk render kolom client */}
-        {columns.map((column, index) => (
-          <div key={index} className="mb-4 w-full">
-            <div className="flex items-center">
-              {/* Kolom Client */}
-              <div className="mr-2 w-full">
-                <input
-                  id={`client-${index}`}
-                  type="text"
-                  value={column.client}
-                  onChange={(e) => handleColumnChange(index, e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Masukkan nama client"
-                />
-              </div>
-
-              {/* Tombol X untuk menghapus kolom */}
-              {index > 0 && column.client && (
-                <button
-                  onClick={() => handleRemoveColumn(index)}
-                  className="text-red-500 ml-2"
-                  style={{ fontSize: '20px' }}
-                >
-                  ×
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
+        {/* Input Clients */}
+        <div className="mb-4 w-full">
+          <label
+            htmlFor="clients"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Client (pisahkan dengan koma)
+          </label>
+          <input
+            id="clients"
+            type="text"
+            value={clients} // Terhubung ke state
+            onChange={(e) => setClients(e.target.value)}
+            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Masukkan nama client, pisahkan dengan koma"
+          />
+        </div>
       </div>
 
       {/* Tombol Upload */}
