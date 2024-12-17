@@ -23,12 +23,15 @@ const EditAbout = () => {
         const fetchedData = response.data.data;
         if (fetchedData && fetchedData.length > 0) {
           const data = fetchedData[0]; // Ambil data pertama dari respons
-
+          const clientList = data.clients
+          .split(/[\n,]/) // Pisahkan dengan koma atau baris baru
+          .map(client => client.trim().replace(/^\["|"]$|^"|"$|\\n/g, '')) // Hapus tanda kutip dan karakter tidak diinginkan
+          .filter(client => client.length > 0); 
           // Isi state dengan data yang diambil dari API
           setDescription(data.description || ""); // Isi deskripsi
           setWhatsappUrl(data.whatsapp || ""); // Isi URL WhatsApp
           setInstagramUrl(data.instagram || ""); // Isi URL Instagram
-          setClients(data.clients || ""); // Isi clients sebagai string
+          setClients(clientList || ""); // Isi clients sebagai string
         } else {
           console.warn("Data tidak ditemukan dalam respons API");
         }
