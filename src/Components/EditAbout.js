@@ -19,26 +19,26 @@ useEffect(() => {
 
       console.log("API Response:", response.data); // Debug log respons API
 
-      const fetchedData = response.data.data;
-      if (fetchedData && fetchedData.length > 0) {
-        const data = fetchedData[0]; // Ambil data pertama dari respons
-        const clientList = data.clients
+        const fetchedData = response.data.data;
+        if (fetchedData && fetchedData.length > 0) {
+          const data = fetchedData[0]; // Ambil data pertama dari respons
+          const clientList = data.clients
           .split(/[\n,]/) // Pisahkan dengan koma atau baris baru
           .map(client => client.trim().replace(/^\["|"]$|^"|"$|\\n/g, '')) // Hapus tanda kutip dan karakter tidak diinginkan
-          .filter(client => client.length > 0);
-      
-        // Isi state dengan data yang diambil dari API
-        setDescription(data.description || ""); // Isi default jika tidak ada deskripsi
-        setWhatsappUrl(data.whatsapp || ""); // Isi default jika tidak ada URL WhatsApp
-        setInstagramUrl(data.instagram || ""); // Isi default jika tidak ada URL Instagram
-        setClients(clientList.join(", ")); // Gabungkan kembali menjadi string dengan koma
-      } else {
-        console.warn("Data tidak ditemukan dalam respons API");
+          .filter(client => client.length > 0); 
+          // Isi state dengan data yang diambil dari API
+          setDescription(data.description || ""); // Isi deskripsi
+          setWhatsappUrl(data.whatsapp || ""); // Isi URL WhatsApp
+          setInstagramUrl(data.instagram || ""); // Isi URL Instagram
+          setClients(clientList || ""); // Isi clients sebagai string
+        } else {
+          console.warn("Data tidak ditemukan dalam respons API");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error); // Debug log jika terjadi kesalahan
+        alert("Gagal mengambil data dari server.");
       }
-    } catch (error) {
-      console.error("Error fetching data:", error); // Log kesalahan jika terjadi
-    }
-  };
+    };
 
   fetchData(); // Panggil fungsi fetch data
 }, []);
